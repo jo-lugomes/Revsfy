@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 // Adicionei PlusCircle aqui nas importações
 import { Search, LogOut, Star, TrendingUp, Clock, X, PlusCircle } from "lucide-react";
 import { auth } from "../firebaseConfig";
+import { API_BASE } from '../config';
 
 interface GameDB {
   appid: string;
@@ -43,7 +44,7 @@ function Home() {
     async function loadMainGrid() {
       setLoadingMain(true);
       try {
-        const res = await fetch(`http://localhost:3001/api/steam/${activeTab}`);
+        const res = await fetch(`${API_BASE}/api/steam/${activeTab}`);
         const data = await res.json();
         setMainGames(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -67,7 +68,7 @@ function Home() {
       setLoadingSearch(true);
       setShowDropdown(true); 
       try {
-        const res = await fetch(`http://localhost:3001/api/jogos/busca?q=${searchQuery}`);
+        const res = await fetch(`${API_BASE}/api/jogos/busca?q=${searchQuery}`);
         if (res.ok) {
             const data = await res.json();
             setSearchResults(Array.isArray(data) ? data : []);
@@ -92,7 +93,7 @@ function Home() {
 
     setSavingGame(true);
     try {
-      const response = await fetch("http://localhost:3001/api/jogos/adicionar", {
+      const response = await fetch("${API_BASE}/api/jogos/adicionar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -5,6 +5,7 @@ import { ArrowLeft, Star, Calendar, Users, MessageSquare, ThumbsUp, ThumbsDown }
 import { getFirestore, collection, addDoc, query, where, onSnapshot, serverTimestamp, orderBy } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { app } from '../firebaseConfig';
+import { API_BASE } from '../config';
 
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -64,7 +65,7 @@ function GameDetails() {
       try {
         // A) Tenta pegar do banco local (caso tenha adicionado manualmente)
         try {
-          const localRes = await fetch(`http://localhost:3001/api/jogos/${gameId}`);
+          const localRes = await fetch(`${API_BASE}/api/jogos/${gameId}`);
           if (localRes.ok) {
              localData = await localRes.json();
              console.log("Dados locais encontrados:", localData);
@@ -75,7 +76,7 @@ function GameDetails() {
 
         // B) Pega detalhes da Steam via Backend
         try {
-          const steamRes = await fetch(`http://localhost:3001/api/steam/details/${gameId}`);
+          const steamRes = await fetch(`${API_BASE}/api/steam/details/${gameId}`);
           if (steamRes.ok) {
              steamInfo = await steamRes.json();
              console.log("Dados Steam encontrados:", steamInfo);
